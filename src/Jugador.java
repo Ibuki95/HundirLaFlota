@@ -1,12 +1,14 @@
 public class Jugador {
     private Celda[][] tableroVisible;
     private Celda[][] tableroTapado;
+    private String nombreJugador;
 
-    public Jugador(){
+    public Jugador(String nombreJugador){
         tableroVisible = new Celda[8][8];
         fillInitialBoard(tableroVisible, true);
         tableroTapado = new Celda[8][8];
         fillInitialBoard(tableroTapado, false);
+        this.nombreJugador = nombreJugador;
     }
 
     private void fillInitialBoard(Celda[][] tablero, boolean esVisible){
@@ -27,5 +29,9 @@ public class Jugador {
 
     public Celda[][] getTableroTapado() {
         return tableroTapado;
+    }
+
+    public String getNombreJugador() {
+        return nombreJugador;
     }
 }
