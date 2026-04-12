@@ -22,15 +22,15 @@ public class Consola {
         System.out.println();
     }
 
-    public void askPositionLineBoat(Jugador jugador, Barco barco){
-        System.out.println(jugador.getNombreJugador() + ", elija en que linea va a poner un/a " + barco.getNombre().toLowerCase());
-        int posicionLinea = checkIfPositionLineIsCorrect(SC.nextInt());
+    public int askPositionLineBoat(Jugador jugador, Barco barco){
+        System.out.println(jugador.getNombreJugador() + ", elija en que linea va a poner un/a " + barco.getNombre().toLowerCase() + ". Debe estar situado/a una casilla lejos de otros barcos.");
+        return checkIfPositionLineIsCorrect(SC.nextInt());
     }
 
     private int checkIfPositionLineIsCorrect(int posicionLinea){
         while (true) {
             if (posicionLinea < 0 || posicionLinea > 7) {
-                System.out.println("Número de linea incorrecto! Vuelva a intentarlo!");
+                System.out.println("¡Número de linea incorrecto! ¡Vuelva a intentarlo!");
                 posicionLinea = SC.nextInt();
             } else {
                 return posicionLinea;
@@ -38,19 +38,45 @@ public class Consola {
         }
     }
 
-    public void askPositionColumnBoat(Jugador jugador, Barco barco){
-        System.out.println(jugador.getNombreJugador() + ", elija en que columna va a poner un/a " + barco.getNombre().toLowerCase());
-        int posicionColumna = checkIfPositionColumnIsCorrect(SC.nextInt());
+    public int askPositionColumnBoat(Jugador jugador, Barco barco){
+        System.out.println(jugador.getNombreJugador() + ", elija en que columna va a poner un/a " + barco.getNombre().toLowerCase() + ". Debe estar situado/a una casilla lejos de otros barcos.");
+        return checkIfPositionColumnIsCorrect(SC.nextInt());
     }
 
     private int checkIfPositionColumnIsCorrect(int posicionColumna){
         while (true) {
             if (posicionColumna < 0 || posicionColumna > 7) {
-                System.out.println("Número de columna incorrecto! Vuelva a intentarlo!");
+                System.out.println("¡Número de columna incorrecto! ¡Vuelva a intentarlo!");
                 posicionColumna = SC.nextInt();
             } else {
                 return posicionColumna;
             }
         }
+    }
+
+    public int askDirectionPutBoat(){
+        System.out.println("¿En que dirección va a situar el barco?\n 1 - Vertical\n 2 - Horizontal");
+        return checkDirectionForBoat(SC.nextInt());
+    }
+
+    private int checkDirectionForBoat(int direccion) {
+        while (true) {
+            switch (direccion) {
+                case 1:
+                case 2:
+                    return direccion;
+                default:
+                    System.out.println("¡Dirección incorrecta! Vuelva a intentarlo.");
+                    direccion = SC.nextInt();
+            }
+        }
+    }
+
+    public void boatIndexOutOfBounds(){
+        System.out.println("¡No puede poner su barco aquí, se sale del tablero! Vuelva a intentarlo.");
+    }
+
+    public void theresAlreadyABoatInPosition(){
+        System.out.println("¡Ya hay un barco aquí! Inténtelo de nuevo.");
     }
 }
