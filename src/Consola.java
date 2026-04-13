@@ -30,7 +30,7 @@ public class Consola {
     private int checkIfPositionLineIsCorrect(int posicionLinea){
         while (true) {
             if (posicionLinea < 0 || posicionLinea > 7) {
-                System.out.println("¡Número de linea incorrecto! ¡Vuelva a intentarlo!");
+                System.out.println("¡Número de linea incorrecto! Vuelva a intentarlo.");
                 posicionLinea = SC.nextInt();
             } else {
                 return posicionLinea;
@@ -46,7 +46,7 @@ public class Consola {
     private int checkIfPositionColumnIsCorrect(int posicionColumna){
         while (true) {
             if (posicionColumna < 0 || posicionColumna > 7) {
-                System.out.println("¡Número de columna incorrecto! ¡Vuelva a intentarlo!");
+                System.out.println("¡Número de columna incorrecto! Vuelva a intentarlo.");
                 posicionColumna = SC.nextInt();
             } else {
                 return posicionColumna;
@@ -72,11 +72,18 @@ public class Consola {
         }
     }
 
-    public void boatIndexOutOfBounds(){
-        System.out.println("¡No puede poner su barco aquí, se sale del tablero! Vuelva a intentarlo.");
+    public void boatIndexOutOfBounds(Celda[][] tablero){
+        System.out.println("¡No puede poner su barco aquí! ¡Se sale del tablero! Vuelva a intentarlo.");
+        printBoard(tablero);
     }
 
-    public void theresAlreadyABoatInPosition(){
-        System.out.println("¡Ya hay un barco aquí! Inténtelo de nuevo.");
+    public void thereIsAlreadyABoatInPosition(Celda[][] tablero){
+        System.out.println("¡Ya hay un barco aquí! vuelva a intentarlo.");
+        printBoard(tablero);
+    }
+
+    public void thereAreBoatsAround(Celda[][] tablero){
+        System.out.println("¡No puede posicionar su barco aquí! Necesita estar alejado mínimo una celda de los demás barcos.");
+        printBoard(tablero);
     }
 }
