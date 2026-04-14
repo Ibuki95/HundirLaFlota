@@ -1,12 +1,10 @@
 public class Celda {
     private boolean celdaTapada;
-    private boolean esBarco;
     private boolean noEsBarco;
     private ParteBarco parteBarco;
 
     public Celda() {
         this.celdaTapada = true;
-        this.esBarco = false;
         this.noEsBarco = false;
         this.parteBarco = null;
     }
@@ -18,13 +16,6 @@ public class Celda {
         return celdaTapada;
     }
 
-    public void setEsBarco(boolean esBarco) {
-        this.esBarco = esBarco;
-    }
-    public boolean getEsBarco() {
-        return esBarco;
-    }
-
     public void setNoEsBarco(boolean noEsBarco) {
         this.noEsBarco = noEsBarco;
     }
@@ -32,12 +23,15 @@ public class Celda {
         return noEsBarco;
     }
 
+    public void setParteBarco(ParteBarco parteBarco){
+        this.parteBarco = parteBarco;
+    }
     public ParteBarco getParteBarco(){
         return parteBarco;
     }
 
-    public boolean isBarcoHerido() {
-        return parteBarco.isBarcoHerido();
+    public boolean getEsBarco() {
+        return this.parteBarco != null;
     }
 
     @Override
@@ -50,7 +44,10 @@ public class Celda {
             return "0";
         }
 
-        if (this.esBarco) {
+        if (this.getEsBarco()) {
+            if(this.parteBarco.isBarcoHerido()){
+                return "X";
+            }
             return "B";
         }
 
