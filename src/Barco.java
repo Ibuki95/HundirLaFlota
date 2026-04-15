@@ -1,14 +1,14 @@
 public class Barco {
     private final int LONGITUD;
     private final String NOMBRE;
-    private ParteBarco[] partes;
+    private final ParteBarco[] PARTES;
 
     public Barco (TipoBarco tipo){
         LONGITUD = tipo.getLongitud();
         NOMBRE = tipo.name();
-        this.partes = new ParteBarco[LONGITUD];
-        for(int i = 0; i < partes.length; i++){
-           partes[i] = new ParteBarco(this);
+        this.PARTES = new ParteBarco[LONGITUD];
+        for(int i = 0; i < PARTES.length; i++){
+           PARTES[i] = new ParteBarco(this);
         }
     }
 
@@ -21,6 +21,16 @@ public class Barco {
     }
 
     public ParteBarco[] getPartes(){
-        return partes;
+        return PARTES;
+    }
+
+    public boolean checkIfBoatSank(){
+        for (ParteBarco parte : PARTES){
+            if(!parte.isBarcoHerido()){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

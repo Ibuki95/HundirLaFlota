@@ -8,7 +8,7 @@ public class Consola {
     }
 
     public String askPlayerName(){
-        System.out.print("Elija un nombre de jugador: ");
+        System.out.print("Seleccione un nombre de jugador: ");
         return SC.nextLine();
     }
 
@@ -31,7 +31,7 @@ public class Consola {
     }
 
     public int askPositionLineBoat(Jugador jugador, Barco barco){
-        System.out.println(jugador.getNombreJugador() + ", elija en que linea va a poner un/a " + barco.getNombre().toLowerCase() + ". Debe estar situado/a una casilla lejos de otros barcos.");
+        System.out.println(jugador.getNombre() + ", seleccione en que linea va a poner un/a " + barco.getNombre().toLowerCase() + ". Debe estar situado/a una casilla lejos de otros barcos.");
         return checkIfPositionLineIsCorrect(SC.nextInt());
     }
 
@@ -47,7 +47,7 @@ public class Consola {
     }
 
     public int askPositionColumnBoat(Jugador jugador, Barco barco){
-        System.out.println(jugador.getNombreJugador() + ", elija en que columna va a poner un/a " + barco.getNombre().toLowerCase() + ". Debe estar situado/a una casilla lejos de otros barcos.");
+        System.out.println(jugador.getNombre() + ", seleccione en que columna va a poner un/a " + barco.getNombre().toLowerCase() + ". Debe estar situado/a una casilla lejos de otros barcos.");
         return checkIfPositionColumnIsCorrect(SC.nextInt());
     }
 
@@ -86,12 +86,34 @@ public class Consola {
     }
 
     public void thereIsAlreadyABoatInPosition(Celda[][] tablero){
-        System.out.println("¡Ya hay un barco aquí! vuelva a intentarlo.");
+        System.out.println("¡Ya hay un barco aquí! Vuelva a intentarlo.");
         printBoard(tablero);
     }
 
     public void thereAreBoatsAround(Celda[][] tablero){
         System.out.println("¡No puede posicionar su barco aquí! Necesita estar alejado mínimo una celda de los demás barcos.");
         printBoard(tablero);
+    }
+
+    public int askPositionLineAttack(Jugador jugador){
+        System.out.println(jugador.getNombre() + ", seleccione la linea donde atacará a su rival.");
+        return checkIfPositionLineIsCorrect(SC.nextInt());
+    }
+
+    public int askPositionColumnAttack(Jugador jugador){
+        System.out.println(jugador.getNombre() + ", seleccione la columna donde atacará a su rival.");
+        return checkIfPositionColumnIsCorrect(SC.nextInt());
+    }
+
+    public void boatHit(Jugador jugador){
+        System.out.println("¡" + jugador.getNombre() + " ha herido un barco!");
+    }
+
+    public void boatSink(Barco barco){
+        System.out.println("¡Ha hundido un/a " + barco.getNombre().toLowerCase() + "!");
+    }
+
+    public void noBoatAttacked(){
+        System.out.println("¡No hay ningún barco aquí!");
     }
 }

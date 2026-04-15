@@ -4,23 +4,17 @@ public class Celda {
     private ParteBarco parteBarco;
 
     public Celda() {
-        this.celdaTapada = true;
-        this.noEsBarco = false;
+        this.celdaTapada = false;
+        this.noEsBarco = true;
         this.parteBarco = null;
     }
 
     public void setCeldaTapada(boolean celdaTapada) {
         this.celdaTapada = celdaTapada;
     }
-    public boolean getCeldaTapada() {
-        return celdaTapada;
-    }
 
     public void setNoEsBarco(boolean noEsBarco) {
         this.noEsBarco = noEsBarco;
-    }
-    public boolean getNoEsBarco() {
-        return noEsBarco;
     }
 
     public void setParteBarco(ParteBarco parteBarco){
@@ -32,6 +26,15 @@ public class Celda {
 
     public boolean getEsBarco() {
         return this.parteBarco != null;
+    }
+
+    public void uncoverCell(){
+        this.celdaTapada = false;
+        if(getEsBarco()){
+            this.parteBarco.attackBoat();
+            return;
+        }
+        this.noEsBarco = true;
     }
 
     @Override
@@ -49,10 +52,6 @@ public class Celda {
                 return "X";
             }
             return "B";
-        }
-
-        if (this.parteBarco.isBarcoHerido()) {
-            return "X";
         }
 
         return "";

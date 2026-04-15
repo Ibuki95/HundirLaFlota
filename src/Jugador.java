@@ -1,40 +1,37 @@
 import java.util.ArrayList;
 
 public class Jugador {
-    private Celda[][] tableroVisible;
-    private Celda[][] tableroTapado;
-    private String nombreJugador;
+    private final Celda[][] TABLERO;
+    private final String NOMBRE;
 
-    public Jugador(String nombreJugador){
-        tableroVisible = new Celda[8][8];
-        fillInitialBoard(tableroVisible, true);
-        tableroTapado = new Celda[8][8];
-        fillInitialBoard(tableroTapado, false);
-        this.nombreJugador = nombreJugador;
+    public Jugador(String NOMBRE){
+        TABLERO = new Celda[8][8];
+        fillInitialBoard();
+        this.NOMBRE = NOMBRE;
     }
 
-    private void fillInitialBoard(Celda[][] tablero, boolean esVisible){
-        for(int i = 0; i < tablero.length; i++){
-            for(int j = 0; j < tablero[0].length; j++){
-                tablero[i][j] = new Celda();
-                if(esVisible){
-                    tablero[i][j].setCeldaTapada(false);
-                    tablero[i][j].setNoEsBarco(true);
-                }
+    private void fillInitialBoard(){
+        for(Celda[] celdas : TABLERO){
+            for(int j = 0; j < TABLERO[0].length; j++){
+                celdas[j] = new Celda();
             }
         }
     }
 
-    public Celda[][] getTableroVisible() {
-        return tableroVisible;
+    public void coverUpBoard(){
+        for (Celda[] celdas : TABLERO) {
+            for (int j = 0; j < TABLERO[0].length; j++) {
+                celdas[j].setCeldaTapada(true);
+            }
+        }
     }
 
-    public Celda[][] getTableroTapado() {
-        return tableroTapado;
+    public Celda[][] getTablero() {
+        return TABLERO;
     }
 
-    public String getNombreJugador() {
-        return nombreJugador;
+    public String getNombre() {
+        return NOMBRE;
     }
 
     public ArrayList<Barco> displayBoats() {

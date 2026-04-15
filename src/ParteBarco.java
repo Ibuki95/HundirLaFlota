@@ -1,19 +1,19 @@
 public class ParteBarco {
 
-    private Barco barco;
+    private final Barco BARCO;
     private boolean barcoHerido;
 
     public ParteBarco(Barco barco){
-        this.barco = barco;
+        this.BARCO = barco;
         this.barcoHerido = false;
     }
 
     public Barco getBarco(){
-        return barco;
+        return BARCO;
     }
 
-    public void atacarBarco(boolean barcoHerido) {
-        this.barcoHerido = barcoHerido;
+    public void attackBoat() {
+        this.barcoHerido = true;
     }
 
     public boolean isBarcoHerido() {

@@ -2,25 +2,31 @@ import java.util.ArrayList;
 
 public class HundirLaFlota {
     private final Consola CONSOLA = new Consola();
-    private Jugador jugador1;
-    private Jugador jugador2;
 
     public void play() {
         CONSOLA.welcomeMessage();
 
-        jugador1 = new Jugador(CONSOLA.askPlayerName());
-        jugador2 = new Jugador(CONSOLA.askPlayerName());
-        Jugador jugadorActual = jugador1;
-        Jugador jugadorRival = jugador2;
+        Jugador jugadorActual = new Jugador(CONSOLA.askPlayerName());
+        Jugador jugadorRival = new Jugador(CONSOLA.askPlayerName());
 
         for (int i = 0; i <= 1; i++) {
-            CONSOLA.printBoard(jugadorActual.getTableroVisible());
+            CONSOLA.printBoard(jugadorActual.getTablero());
             askWhereToPutBoat(jugadorActual.displayBoats(), jugadorActual);
+            jugadorActual.coverUpBoard();
+
             Jugador temp = jugadorActual;
             jugadorActual = jugadorRival;
             jugadorRival = temp;
         }
-        
+
+        while (true){
+            CONSOLA.printBoard(jugadorRival.getTablero());
+            attackBoats(jugadorActual, jugadorRival.getTablero());
+
+            Jugador temp = jugadorActual;
+            jugadorActual = jugadorRival;
+            jugadorRival = temp;
+        }
     }
 
     private void askWhereToPutBoat(ArrayList<Barco> barcos, Jugador jugadorActual) {
@@ -28,8 +34,8 @@ public class HundirLaFlota {
             int posicionLinea = CONSOLA.askPositionLineBoat(jugadorActual, barcos.get(i));
             int posicionColumna = CONSOLA.askPositionColumnBoat(jugadorActual, barcos.get(i));
             int direccion = CONSOLA.askDirectionPutBoat();
-            if(putBoatOnBoard(jugadorActual, barcos, barcos.indexOf(barcos.get(i)), posicionLinea, posicionColumna, direccion)){
-                CONSOLA.printBoard(jugadorActual.getTableroVisible());
+            if (putBoatOnBoard(jugadorActual, barcos, barcos.indexOf(barcos.get(i)), posicionLinea, posicionColumna, direccion)) {
+                CONSOLA.printBoard(jugadorActual.getTablero());
             } else {
                 i--;
             }
@@ -38,7 +44,7 @@ public class HundirLaFlota {
 
     private boolean putBoatOnBoard(Jugador jugadorActual, ArrayList<Barco> barcos, int indexBarco, int posicionLinea, int posicionColumna, int direccion) {
         Barco barco = barcos.get(indexBarco);
-        Celda[][] tablero = jugadorActual.getTableroVisible();
+        Celda[][] tablero = jugadorActual.getTablero();
         ParteBarco[] partes = barco.getPartes();
 
         if (tablero[posicionLinea][posicionColumna].getEsBarco()) {
@@ -67,10 +73,8 @@ public class HundirLaFlota {
                 return false;
             }
 
-            for (int j = 0; j < barco.getLongitud(); j++) {
-                tablero[posicionLinea][posicionColumna].setParteBarco(partes[j]);
-                tablero[posicionLinea][posicionColumna].setNoEsBarco(false);
-            }
+            tablero[posicionLinea][posicionColumna].setParteBarco(partes[i]);
+            tablero[posicionLinea][posicionColumna].setNoEsBarco(false);
 
             if (direccion == 1 && posicionLinea <= tablero.length - 1) {
                 posicionLinea++;
@@ -100,5 +104,30 @@ public class HundirLaFlota {
         }
 
         return false;
+    }
+
+    private void attackBoats(Jugador jugadorActual, Celda[][] tablero){
+        while(true) {
+            int posicionLinea = CONSOLA.askPositionLineAttack(jugadorActual);
+            int posicionColumna = CONSOLA.askPositionColumnAttack(jugadorActual);
+
+            if (tablero[posicionLinea][posicionColumna].getEsBarco()) {
+                ParteBarco parte = tablero[posicionLinea][posicionColumna].getParteBarco();
+
+                tablero[posicionLinea][posicionColumna].uncoverCell();
+                CONSOLA.boatHit(jugadorActual);
+
+                if (parte.getBarco().checkIfBoatSank()) {
+                    CONSOLA.boatSink(parte.getBarco());
+                }
+
+                CONSOLA.printBoard(tablero);
+
+            } else {
+                tablero[posicionLinea][posicionColumna].uncoverCell();
+                CONSOLA.noBoatAttacked();
+                return;
+            }
+        }
     }
 }
