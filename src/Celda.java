@@ -41,7 +41,7 @@ public class Celda {
         }
 
         if (this.noEsBarco) {
-            return "0";
+            return "-";
         }
 
         if (this.getEsBarco()) {

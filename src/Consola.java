@@ -12,10 +12,18 @@ public class Consola {
         return SC.nextLine();
     }
 
-    public void printBoard(Celda[][] tablero){
-        for (Celda[] cells : tablero) {
+    public void printBoard(Celda[][] tablero) {
+        System.out.print("  ");
+        for (int j = 0; j < tablero[0].length; j++) {
+            System.out.print(j + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < tablero.length; i++) {
+            System.out.print(i + " ");
+
             for (int j = 0; j < tablero[0].length; j++) {
-                System.out.print(cells[j] + " ");
+                System.out.print(tablero[i][j] + " ");
             }
             System.out.println();
         }

@@ -13,43 +13,43 @@ public class HundirLaFlota {
         Jugador jugadorActual = jugador1;
         Jugador jugadorRival = jugador2;
 
-        CONSOLA.printBoard(jugadorActual.getTableroVisible());
-
         for (int i = 0; i <= 1; i++) {
-            askWhereToPutBoat(jugadorActual.displayBoats(), jugadorActual, 0);
+            CONSOLA.printBoard(jugadorActual.getTableroVisible());
+            askWhereToPutBoat(jugadorActual.displayBoats(), jugadorActual);
             Jugador temp = jugadorActual;
             jugadorActual = jugadorRival;
             jugadorRival = temp;
         }
-
+        
     }
 
-    private void askWhereToPutBoat(ArrayList<Barco> barcos, Jugador jugadorActual, int indexBarco) {
-        for (int i = indexBarco; i < barcos.size(); i++) {
+    private void askWhereToPutBoat(ArrayList<Barco> barcos, Jugador jugadorActual) {
+        for (int i = 0; i < barcos.size(); i++) {
             int posicionLinea = CONSOLA.askPositionLineBoat(jugadorActual, barcos.get(i));
             int posicionColumna = CONSOLA.askPositionColumnBoat(jugadorActual, barcos.get(i));
             int direccion = CONSOLA.askDirectionPutBoat();
-            putBoatOnBoard(jugadorActual, barcos, barcos.indexOf(barcos.get(i)), posicionLinea, posicionColumna, direccion);
-            CONSOLA.printBoard(jugadorActual.getTableroVisible());
+            if(putBoatOnBoard(jugadorActual, barcos, barcos.indexOf(barcos.get(i)), posicionLinea, posicionColumna, direccion)){
+                CONSOLA.printBoard(jugadorActual.getTableroVisible());
+            } else {
+                i--;
+            }
         }
     }
 
-    private void putBoatOnBoard(Jugador jugadorActual, ArrayList<Barco> barcos, int indexBarco, int posicionLinea, int posicionColumna, int direccion) {
+    private boolean putBoatOnBoard(Jugador jugadorActual, ArrayList<Barco> barcos, int indexBarco, int posicionLinea, int posicionColumna, int direccion) {
         Barco barco = barcos.get(indexBarco);
         Celda[][] tablero = jugadorActual.getTableroVisible();
         ParteBarco[] partes = barco.getPartes();
 
         if (tablero[posicionLinea][posicionColumna].getEsBarco()) {
             CONSOLA.thereIsAlreadyABoatInPosition(tablero);
-            askWhereToPutBoat(barcos, jugadorActual, indexBarco);
-            return;
+            return false;
         }
 
         for (int i = 0; i < barco.getLongitud(); i++) {
-            if (checkIfAnyBoatsAreAroundPosition(tablero, posicionLinea, posicionColumna)) {
+            if (checkIfAnyBoatsAreAroundPosition(tablero, posicionLinea, posicionColumna, partes[0])) {
                 CONSOLA.thereAreBoatsAround(tablero);
-                askWhereToPutBoat(barcos, jugadorActual, indexBarco);
-                return;
+                return false;
             }
 
             if (posicionLinea > tablero.length - 1 || posicionColumna > tablero[0].length - 1) {
@@ -64,11 +64,10 @@ public class HundirLaFlota {
                 }
 
                 CONSOLA.boatIndexOutOfBounds(tablero);
-                askWhereToPutBoat(barcos, jugadorActual, indexBarco);
-                return;
+                return false;
             }
 
-            for(int j = 0; j < barco.getLongitud(); j++){
+            for (int j = 0; j < barco.getLongitud(); j++) {
                 tablero[posicionLinea][posicionColumna].setParteBarco(partes[j]);
                 tablero[posicionLinea][posicionColumna].setNoEsBarco(false);
             }
@@ -79,27 +78,24 @@ public class HundirLaFlota {
                 posicionColumna++;
             }
         }
+
+        return true;
     }
 
-    private boolean checkIfAnyBoatsAreAroundPosition(Celda[][] tablero, int posicionLinea, int posicionColumna) {
+    private boolean checkIfAnyBoatsAreAroundPosition(Celda[][] tablero, int posicionLinea, int posicionColumna, ParteBarco parte) {
         int[][] direcciones = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1}, {1, -1}, {-1, 1}};
 
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[0].length; j++) {
-                for (int[] direccion : direcciones) {
-                    int lineaDireccion = direccion[0];
-                    int columnaDireccion = direccion[1];
-                    int lineaComprobarSiHayBarco = posicionLinea + lineaDireccion;
-                    int columnaComprobarSiHayBarco = posicionColumna + columnaDireccion;
+        for (int[] direccion : direcciones) {
+            int lineaDireccion = direccion[0];
+            int columnaDireccion = direccion[1];
+            int lineaComprobarSiHayBarco = posicionLinea + lineaDireccion;
+            int columnaComprobarSiHayBarco = posicionColumna + columnaDireccion;
 
-                    if ((lineaComprobarSiHayBarco < tablero.length && lineaComprobarSiHayBarco >= 0) &&
-                            (columnaComprobarSiHayBarco < tablero[0].length && columnaComprobarSiHayBarco >= 0) &&
-                            (tablero[lineaComprobarSiHayBarco][columnaComprobarSiHayBarco].getEsBarco()) &&
-                            (tablero[lineaComprobarSiHayBarco][columnaComprobarSiHayBarco].getParteBarco().getBarco() != tablero[posicionLinea][posicionColumna].getParteBarco().getBarco())) {
-                        return true;
-                    }
-                }
-
+            if ((lineaComprobarSiHayBarco < tablero.length && lineaComprobarSiHayBarco >= 0) &&
+                    (columnaComprobarSiHayBarco < tablero[0].length && columnaComprobarSiHayBarco >= 0) &&
+                    (tablero[lineaComprobarSiHayBarco][columnaComprobarSiHayBarco].getEsBarco()) &&
+                    (tablero[lineaComprobarSiHayBarco][columnaComprobarSiHayBarco].getParteBarco().getBarco() != parte.getBarco())) {
+                return true;
             }
         }
 

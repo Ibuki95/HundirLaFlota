@@ -12,7 +12,7 @@ public class ParteBarco {
         return barco;
     }
 
-    public void setBarcoHerido(boolean barcoHerido) {
+    public void atacarBarco(boolean barcoHerido) {
         this.barcoHerido = barcoHerido;
     }
 
