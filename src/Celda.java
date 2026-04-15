@@ -12,6 +12,9 @@ public class Celda {
     public void setCeldaTapada(boolean celdaTapada) {
         this.celdaTapada = celdaTapada;
     }
+    public boolean isCeldaTapada(){
+        return celdaTapada;
+    }
 
     public void setNoEsBarco(boolean noEsBarco) {
         this.noEsBarco = noEsBarco;

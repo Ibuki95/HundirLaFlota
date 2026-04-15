@@ -96,24 +96,32 @@ public class Consola {
     }
 
     public int askPositionLineAttack(Jugador jugador){
-        System.out.println(jugador.getNombre() + ", seleccione la linea donde atacará a su rival.");
+        System.out.println(jugador.getNombre() + ", seleccione la linea que atacará.");
         return checkIfPositionLineIsCorrect(SC.nextInt());
     }
 
     public int askPositionColumnAttack(Jugador jugador){
-        System.out.println(jugador.getNombre() + ", seleccione la columna donde atacará a su rival.");
+        System.out.println(jugador.getNombre() + ", seleccione la columna que atacará.");
         return checkIfPositionColumnIsCorrect(SC.nextInt());
+    }
+
+    public void cellAlreadyUncovered(){
+        System.out.println("Esta celda ya está destapada.");
     }
 
     public void boatHit(Jugador jugador){
         System.out.println("¡" + jugador.getNombre() + " ha herido un barco!");
     }
 
-    public void boatSink(Barco barco){
-        System.out.println("¡Ha hundido un/a " + barco.getNombre().toLowerCase() + "!");
+    public void boatSink(Barco barco, Jugador jugadorActual, Jugador jugadorRival){
+        System.out.println("¡" + jugadorActual.getNombre() + " ha hundido un/a " + barco.getNombre().toLowerCase() + " de " + jugadorRival.getNombre() + "!");
     }
 
     public void noBoatAttacked(){
         System.out.println("¡No hay ningún barco aquí!");
+    }
+
+    public void wonGame(Jugador jugadorActual, Jugador jugadorRival){
+        System.out.println("¡" + jugadorActual.getNombre() + " ha hundido todos los barcos de " + jugadorRival.getNombre() + "! ¡Enhorabuena!");
     }
 }

@@ -21,7 +21,11 @@ public class HundirLaFlota {
 
         while (true){
             CONSOLA.printBoard(jugadorRival.getTablero());
-            attackBoats(jugadorActual, jugadorRival.getTablero());
+
+            if(attackBoats(jugadorActual, jugadorRival)){
+                CONSOLA.wonGame(jugadorActual, jugadorRival);
+                return;
+            }
 
             Jugador temp = jugadorActual;
             jugadorActual = jugadorRival;
@@ -106,10 +110,17 @@ public class HundirLaFlota {
         return false;
     }
 
-    private void attackBoats(Jugador jugadorActual, Celda[][] tablero){
+    private boolean attackBoats(Jugador jugadorActual, Jugador jugadorRival){
+        Celda [][] tablero = jugadorRival.getTablero();
+
         while(true) {
             int posicionLinea = CONSOLA.askPositionLineAttack(jugadorActual);
             int posicionColumna = CONSOLA.askPositionColumnAttack(jugadorActual);
+
+            if(!tablero[posicionLinea][posicionColumna].isCeldaTapada()){
+                CONSOLA.cellAlreadyUncovered();
+                continue;
+            }
 
             if (tablero[posicionLinea][posicionColumna].getEsBarco()) {
                 ParteBarco parte = tablero[posicionLinea][posicionColumna].getParteBarco();
@@ -118,16 +129,34 @@ public class HundirLaFlota {
                 CONSOLA.boatHit(jugadorActual);
 
                 if (parte.getBarco().checkIfBoatSank()) {
-                    CONSOLA.boatSink(parte.getBarco());
+                    CONSOLA.boatSink(parte.getBarco(), jugadorActual, jugadorRival);
                 }
 
                 CONSOLA.printBoard(tablero);
 
+                if(checkIfWonGame(jugadorRival.getTablero())){
+                    return true;
+                }
+
             } else {
                 tablero[posicionLinea][posicionColumna].uncoverCell();
                 CONSOLA.noBoatAttacked();
-                return;
+                return false;
             }
         }
+    }
+
+    private boolean checkIfWonGame(Celda[][] tablero){
+        for (Celda[] celdas : tablero) {
+            for (int j = 0; j < tablero[0].length; j++) {
+                if (celdas[j].getEsBarco()) {
+                    if (!celdas[j].getParteBarco().getBarco().checkIfBoatSank()) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }
