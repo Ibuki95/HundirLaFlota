@@ -4,7 +4,7 @@ public class Consola {
     private final Scanner SC = new Scanner(System.in);
 
     public void welcomeMessage(){
-        System.out.println("¡Bienvenidos a hundir la flota!\nAmbos jugadores van a disponer de 10 barcos, un Portaviones, dos Buques, tres Cruceros y cuatro Lanchas.\n¡Que empiece el juego!");
+        System.out.println("¡Bienvenidos a hundir la flota!\nAmbos jugadores van a disponer de 10 barcos: un Portaviones, dos Buques, tres Cruceros y cuatro Lanchas.\n¡Que empiece el juego!");
     }
 
     public String askPlayerName(){
@@ -95,13 +95,13 @@ public class Consola {
         printBoard(tablero);
     }
 
-    public int askPositionLineAttack(Jugador jugador){
-        System.out.println(jugador.getNombre() + ", seleccione la linea que atacará.");
+    public int askPositionLineAttack(Tablero jugador){
+        System.out.println(jugador.getJugador() + ", seleccione la linea que atacará.");
         return checkIfPositionLineIsCorrect(SC.nextInt());
     }
 
-    public int askPositionColumnAttack(Jugador jugador){
-        System.out.println(jugador.getNombre() + ", seleccione la columna que atacará.");
+    public int askPositionColumnAttack(Tablero jugador){
+        System.out.println(jugador.getJugador() + ", seleccione la columna que atacará.");
         return checkIfPositionColumnIsCorrect(SC.nextInt());
     }
 
@@ -109,19 +109,19 @@ public class Consola {
         System.out.println("Esta celda ya está destapada.");
     }
 
-    public void boatHit(Jugador jugador){
-        System.out.println("¡" + jugador.getNombre() + " ha herido un barco!");
+    public void boatHit(Tablero jugador){
+        System.out.println("¡" + jugador.getJugador() + " ha herido un barco!");
     }
 
-    public void boatSink(Barco barco, Jugador jugadorActual, Jugador jugadorRival){
-        System.out.println("¡" + jugadorActual.getNombre() + " ha hundido un/a " + barco.getNombre().toLowerCase() + " de " + jugadorRival.getNombre() + "!");
+    public void boatSink(Barco barco, Tablero jugadorActual, Tablero jugadorRival){
+        System.out.println("¡" + jugadorActual.getJugador() + " ha hundido un/a " + barco.getNombre().toLowerCase() + " de " + jugadorRival.getJugador() + "!");
     }
 
     public void noBoatAttacked(){
         System.out.println("¡No hay ningún barco aquí!");
     }
 
-    public void wonGame(Jugador jugadorActual, Jugador jugadorRival){
-        System.out.println("¡" + jugadorActual.getNombre() + " ha hundido todos los barcos de " + jugadorRival.getNombre() + "! ¡Enhorabuena!");
+    public void wonGame(Tablero jugadorActual, Tablero jugadorRival){
+        System.out.println("¡" + jugadorActual.getJugador() + " ha hundido todos los barcos de " + jugadorRival.getJugador() + "! ¡Enhorabuena!");
     }
 }
